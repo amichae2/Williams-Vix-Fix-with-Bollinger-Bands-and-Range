@@ -1,5 +1,7 @@
 import math
 
+import pandas
+
 
 class Custom_Indicators:
 
@@ -155,7 +157,7 @@ class Custom_Indicators:
         # Need to use 6mo with y finance if using 1d interval data
 
         stock_pd = closes
-        add_pd = {'wvf': None, 'STD': None, 'BB': None}
+        add_pd = {'WVF': None, 'STD': None, 'BB Up': None, 'BB Low': None, 'WVF SMA': None, 'High Range': None, 'Low Range': None}
 
         WVF_lookback_p_STD = 22
         BB_length = 20
@@ -165,10 +167,25 @@ class Custom_Indicators:
         lowest_pe = 1.01
 
         WVFs = self.get_wvf(source=stock_pd['Close'].to_list(), length=WVF_lookback_p_STD, lows=stock_pd['Low'].to_list())
-        add_pd['wvf'] = WVFs
+        add_pd['WVF'] = WVFs
 
         STDs_and_SMAs = self.sma_std(source=WVFs, length=BB_length)
+        add_pd['WVF SMA'] = STDs_and_SMAs.get('SMAs')
+
         mult_stdev = self.mult_sdev(source=STDs_and_SMAs, mult=BB_STD_up)
+        add_pd['STD'] = mult_stdev
+
         low_and_up_bands = self.BB_bands(SMAs=STDs_and_SMAs, STDs=mult_stdev)
+        add_pd['BB Up'] = low_and_up_bands.get('up BB')
+        add_pd['BB Low'] = low_and_up_bands.get('low BB')
+
         high_and_low_range = self.get_high_and_low(source=WVFs, length=lookback_p_high_pe, high_pe=highest_pe,
                                                    low_pe=lowest_pe)
+        add_pd['High Range'] = high_and_low_range.get('high ranges')
+        add_pd['Low Range'] = high_and_low_range.get('low ranges')
+
+        new_df = pandas.DataFrame(add_pd, index=stock_pd.index)
+        stock_pd = stock_pd.join(new_df)
+
+        return stock_pd
+
