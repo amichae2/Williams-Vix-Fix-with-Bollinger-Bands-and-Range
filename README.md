@@ -3,6 +3,8 @@ This code mimics the code of ChrisMoody's Williams Vix Fix with Bollinger Bands 
 
 This code is based on the code for this Community Script: https://www.tradingview.com/script/og7JPrRA-CM-Williams-Vix-Fix-Finds-Market-Bottoms/
 
+A description of the indicator can be found in the file named, "williams1207 - VIXFix.pdf" in the repository.
+
 WARNING: The Standard Deviation (STD) Calculation touches the Williams VIX Fix (WVF) at the correct time but does not yield the exact same STD as the one on TradingView. I do not understand why this is but it appears to mirror the one on TradingView better the farther back you go. The upper and lower range, WVF and SMAs are correct.
 
 WARNING: If you adjust the lookback periods in this code you need to adjust the number of Nones hard coded in the other funtions.
