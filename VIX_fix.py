@@ -154,8 +154,6 @@ class Custom_Indicators:
 
     def Williams_VIX_Fix_BB_STD(self, closes):
 
-        # Need to use 6mo with y finance if using 1d interval data
-
         stock_pd = closes
         add_pd = {'WVF': None, 'STD': None, 'BB Up': None, 'BB Low': None, 'WVF SMA': None, 'High Range': None, 'Low Range': None}
 
